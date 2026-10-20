@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="890" viewBox="0 0 1200 890"><rect width="1200" height="890" fill="#f8fafc"/>
+<text x="30" y="42" font-family="Arial,sans-serif" font-size="26" fill="#16324f">ARDUINO WASTE SEGREGATION · REFERENCE CONNECTIONS</text>
+<text x="30" y="78" font-family="Arial,sans-serif" font-size="18" fill="#16324f">UNO R3 · three inputs · selector + gate servos · proposed mechanics, hardware validation pending</text>
+<rect x="40" y="130" width="300" height="355" rx="8" fill="#dbeafe" stroke="#94a3b8"/>
+<text x="60" y="170" font-family="Arial,sans-serif" font-size="23" fill="#16324f">ARDUINO UNO R3</text>
+<text x="60" y="215" font-family="Arial,sans-serif" font-size="17" fill="#16324f">USB → board power</text>
+<text x="60" y="251" font-family="Arial,sans-serif" font-size="17" fill="#16324f">D2 ← presence OUT</text>
+<text x="60" y="287" font-family="Arial,sans-serif" font-size="17" fill="#16324f">D3 ← conditioned metal OUT</text>
+<text x="60" y="323" font-family="Arial,sans-serif" font-size="17" fill="#16324f">A0 ← moisture AO</text>
+<text x="60" y="359" font-family="Arial,sans-serif" font-size="17" fill="#16324f">D9 → diverter servo signal</text>
+<text x="60" y="395" font-family="Arial,sans-serif" font-size="17" fill="#16324f">D10 → gate servo signal</text>
+<text x="60" y="431" font-family="Arial,sans-serif" font-size="17" fill="#16324f">D4 → NC stop → GND</text>
+<rect x="740" y="130" width="420" height="105" rx="8" fill="#ecfdf5" stroke="#94a3b8"/>
+<text x="760" y="165" font-family="Arial,sans-serif" font-size="21" fill="#16324f">IR PRESENCE MODULE</text>
+<text x="760" y="205" font-family="Arial,sans-serif" font-size="18" fill="#16324f">OUT → D2; verify active LOW</text>
+<rect x="740" y="260" width="420" height="105" rx="8" fill="#ecfdf5" stroke="#94a3b8"/>
+<text x="760" y="295" font-family="Arial,sans-serif" font-size="21" fill="#16324f">METAL SENSOR + INTERFACE</text>
+<text x="760" y="335" font-family="Arial,sans-serif" font-size="18" fill="#16324f">0–5 V-compatible OUT → D3</text>
+<rect x="740" y="390" width="420" height="105" rx="8" fill="#ecfdf5" stroke="#94a3b8"/>
+<text x="760" y="425" font-family="Arial,sans-serif" font-size="21" fill="#16324f">MOISTURE MODULE</text>
+<text x="760" y="465" font-family="Arial,sans-serif" font-size="18" fill="#16324f">0–5 V analog output → A0</text>
+<polyline points="340,250 570,250 570,195 740,195" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polyline points="340,285 610,285 610,325 740,325" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polyline points="340,322 580,322 580,455 740,455" fill="none" stroke="#2563eb" stroke-width="2"/>
+<rect x="40" y="535" width="520" height="145" rx="8" fill="#fef3c7" stroke="#94a3b8"/>
+<text x="60" y="575" font-family="Arial,sans-serif" font-size="23" fill="#16324f">SERVO SUPPLY</text>
+<text x="60" y="615" font-family="Arial,sans-serif" font-size="18" fill="#16324f">Separate regulated supply within both servo ratings</text>
+<text x="60" y="653" font-family="Arial,sans-serif" font-size="17" fill="#16324f">Join GND; do not join positive to USB UNO 5V</text>
+<rect x="740" y="550" width="420" height="95" rx="8" fill="#fef3c7" stroke="#94a3b8"/>
+<text x="760" y="585" font-family="Arial,sans-serif" font-size="22" fill="#16324f">DIVERTER SERVO</text>
+<text x="760" y="622" font-family="Arial,sans-serif" font-size="17" fill="#16324f">Signal D9; V+ servo supply; GND common</text>
+<rect x="740" y="680" width="420" height="95" rx="8" fill="#fef3c7" stroke="#94a3b8"/>
+<text x="760" y="715" font-family="Arial,sans-serif" font-size="22" fill="#16324f">RELEASE GATE SERVO</text>
+<text x="760" y="752" font-family="Arial,sans-serif" font-size="17" fill="#16324f">Signal D10; V+ servo supply; GND common</text>
+<polyline points="340,358 650,358 650,600 740,600" fill="none" stroke="#7c3aed" stroke-width="2"/>
+<polyline points="340,395 680,395 680,730 740,730" fill="none" stroke="#7c3aed" stroke-width="2"/>
+<polyline points="560,600 600,600 600,650 1130,650" fill="none" stroke="#dc2626" stroke-width="2"/>
+<polyline points="600,650 600,780 1130,780" fill="none" stroke="#dc2626" stroke-width="2"/>
+<rect x="40" y="720" width="520" height="80" rx="8" fill="#fff" stroke="#94a3b8"/>
+<text x="60" y="753" font-family="Arial,sans-serif" font-size="17" fill="#16324f">Common GND: UNO, sensors, interfaces and servos.</text>
+<text x="60" y="785" font-family="Arial,sans-serif" font-size="17" fill="#16324f">Exact supply/pin order must follow actual datasheets.</text>
+<text x="40" y="840" font-family="Arial,sans-serif" font-size="17" fill="#16324f">Industrial proximity sensor outputs may exceed UNO limits: use a verified interface; no direct high-voltage wiring.</text>
+<text x="40" y="876" font-family="Arial,sans-serif" font-size="17" fill="#16324f">Net labels define connections. Gate/selector angles and load limits require calibration. See hardware/wiring.md.</text>
+</svg>
