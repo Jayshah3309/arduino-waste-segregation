@@ -1,0 +1,24 @@
+name: Verify waste sorter firmware
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  host-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Test classification and cycle
+        run: |
+          g++ -std=c++11 -Wall -Wextra -Werror tests/control_test.cpp -o /tmp/waste-sorter-test
+          /tmp/waste-sorter-test
+  uno-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Build UNO reference
+        run: |
+          arduino-cli core update-index
+          arduino-cli core install arduino:avr@1.8.6
+          arduino-cli lib install "Servo@1.2.2"
+          arduino-cli compile --fqbn arduino:avr:uno --warnings all firmware/waste_sorter
