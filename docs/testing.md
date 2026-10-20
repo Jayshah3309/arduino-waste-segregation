@@ -1,6 +1,6 @@
 # Validation and evidence status
 
-New reference implementation. Exact sensor models, interface circuits, mechanics, actuator limits and actual sorting results are unverified. Host tests exercise classification thresholds, metal priority, ambiguous cases, startup/arming, complete cycle timing, fault/reset, repeated-item blocking and clock rollover. GitHub Actions compiles for UNO with Servo 1.2.2. Record the verified run URL after execution.
+New reference implementation. Exact sensor models, interface circuits, mechanics, actuator limits and actual sorting results are unverified. Host tests exercise classification thresholds, metal priority, ambiguous cases, startup/arming, complete cycle timing, fault/reset, repeated-item blocking and clock rollover. GitHub Actions compiles for UNO with Servo 1.2.2. Both jobs passed in [verified run #1](https://github.com/Jayshah3309/arduino-waste-segregation/actions/runs/39409247708), commit `e6c2e3c`, on 20 October 2026. The Arduino setup action emitted a runtime deprecation warning; it did not fail the build.
 
 ## Bench acceptance checklist
 
