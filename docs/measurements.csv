@@ -1,1 +1,1 @@
-date,firmware_commit,sample_id,true_class,material,contact_condition,moisture_raw,moisture_normalized,metal_votes,commanded_class,actual_bin,cycle_ms,jam,notes
+date,trial_id,evidence_type,split,firmware_commit,operator,sample_id,true_class,material,contact_condition,normalization,moisture_raw,moisture_normalized,metal_votes,commanded_class,actual_bin,cycle_ms,jam,notes
