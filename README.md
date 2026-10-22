@@ -24,7 +24,7 @@ This is threshold-based sensing, not AI material recognition. Moisture does not 
 | Object lost during settling/sampling | FAULT |
 | Chamber remains occupied for 5 s in WAIT_CLEAR | FAULT |
 
-Thresholds and angles are examples requiring calibration. Readings 0–3 metal votes are treated as non-metal by policy, not proven absence of metal. Sensor faults/disconnects are not reliably diagnosed. Dry/wet routing occurs only after ten samples at 20 ms spacing, following presence qualification and settling.
+Thresholds and angles are examples requiring calibration. Readings 0–3 metal votes are treated as non-metal by policy, not proven absence of metal. Presence/metal/moisture sensor faults/disconnects are not reliably diagnosed. Optional gate endpoint feedback is a separate, disabled-by-default check. Dry/wet routing occurs only after ten samples at 20 ms spacing, following presence qualification and settling.
 
 ## Control and sequence
 
@@ -32,7 +32,7 @@ Thresholds and angles are examples requiring calibration. Readings 0–3 metal v
 - Serial `A` arms only with chamber clear and stop-input loop closed.
 - Home 700 ms → clear for 300 ms → IDLE.
 - Presence 150 ms → settle 200 ms → sample → align 700 ms → release 600 ms → close 400 ms → home → wait clear.
-- Serial `X` stops the cycle and commands the gate closed; diverter position is retained.
+- Serial `X` stops the cycle and commands the gate closed; diverter position is retained. An existing FAULT stays latched until qualified `R`.
 - Opening the stop-input loop faults an active cycle. This is software monitoring, not a power cutoff.
 - Serial `R` clears a fault only when the chamber is clear and stop loop closed; `A` is then required.
 
@@ -53,6 +53,27 @@ Servo commands and timing do not confirm movement or successful disposal. `route
 | USB cable, wires and suitable mounting | As needed | Common ground |
 
 A DC motor/conveyor and its driver are not part of this reference. Industrial proximity sensors often require higher supplies and interface conversion; never assume their outputs can connect directly. See [wiring](hardware/wiring.md).
+
+## Trial analysis and optional gate feedback
+
+This version adds a reproducible validation workflow, **not measured physical performance**:
+
+- `trials.py` validates trial CSV, compiles the actual C++ classifier, and generates JSON/HTML confusion matrices.
+- Sensor classification, recorded firmware commands and observed destination bins are analyzed separately. UNKNOWN/reject/no-bin trials stay visible.
+- Calibration proposes thresholds using only calibration rows, with a configurable ambiguous gap. It never flashes hardware or edits source automatically.
+- The committed example dataset is explicitly synthetic; the physical worksheet remains blank. Generated reports and real trial files belong in ignored `reports/` and `data/`.
+- Optional D5/D6 gate endpoint feedback detects contradictory contacts or a missing endpoint after 350 ms. It is **disabled by default** and unverified physically.
+- Fault causes and ten-sample statistics are included in Serial logs. `X` closes the gate but now preserves an existing FAULT; `R` is still required before re-arming.
+
+Python 3.10+ and g++ are required for the host tools; no Python packages are needed:
+
+```sh
+python trials.py analyze --input examples/synthetic-trials.csv --out reports/synthetic
+python trials.py calibrate --input examples/synthetic-trials.csv --out reports/calibration
+python -m unittest discover -s tests -p 'test_*.py' -v
+```
+
+Open `reports/synthetic/report.html`. These example results demonstrate software behavior only. See [trial protocol and metric definitions](docs/trials.md), [optional feedback wiring](hardware/wiring.md), and [verification evidence](docs/testing.md).
 
 ## Files
 
@@ -83,11 +104,11 @@ g++ -std=c++11 -Wall -Wextra -Werror tests/control_test.cpp -o /tmp/waste-sorter
 /tmp/waste-sorter-test
 ```
 
-GitHub Actions runs the tests and builds for UNO. Tests do not validate actual sensor discrimination, servo torque, jams or physical sorting.
+GitHub Actions runs host control tests, Python trial-tool tests and report generation, and builds UNO configurations with feedback disabled and enabled. Tests do not validate actual sensor discrimination, servo torque, physical jams or sorting.
 
 ## Evidence and limits
 
-No measured accuracy, throughput, power, durability or bin capacity is claimed. The prototype cannot reliably identify hazardous, composite or contaminated waste. No network dashboard, bin-full sensing, autonomous jam recovery or persistent statistics is implemented. See [roadmap](docs/roadmap.md).
+No measured accuracy, throughput, power, durability or bin capacity is claimed. The prototype cannot reliably identify hazardous, composite or contaminated waste. An offline HTML trial report is provided. No network dashboard, bin-full sensing, autonomous jam recovery or persistent on-device statistics is implemented. Gate endpoint fault detection is optional source code, not a verified jam sensor. See [roadmap](docs/roadmap.md).
 
 ## Credits, license and references
 
