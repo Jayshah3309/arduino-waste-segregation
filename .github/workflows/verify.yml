@@ -4,15 +4,34 @@ permissions:
   contents: read
 jobs:
   host-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
       - name: Test classification and cycle
         run: |
-          g++ -std=c++11 -Wall -Wextra -Werror tests/control_test.cpp -o /tmp/waste-sorter-test
+          g++ -std=c++11 -Wall -Wextra -Werror -fsanitize=undefined -fno-sanitize-recover=all tests/control_test.cpp -o /tmp/waste-sorter-test
           /tmp/waste-sorter-test
+  trial-tools:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        python: ['3.10', '3.12']
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - run: python trials.py analyze --input examples/synthetic-trials.csv --out reports/synthetic
+      - run: python trials.py calibrate --input examples/synthetic-trials.csv --out reports/calibration
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: synthetic-trial-reports-python-${{ matrix.python }}
+          path: reports/
+          if-no-files-found: warn
   uno-build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
       - uses: arduino/setup-arduino-cli@v2
@@ -22,3 +41,9 @@ jobs:
           arduino-cli core install arduino:avr@1.8.6
           arduino-cli lib install "Servo@1.2.2"
           arduino-cli compile --fqbn arduino:avr:uno --warnings all firmware/waste_sorter
+      - name: Compile optional gate feedback configuration
+        run: |
+          mkdir -p /tmp/feedback/waste_sorter
+          cp firmware/waste_sorter/* /tmp/feedback/waste_sorter/
+          sed -i 's/USE_GATE_FEEDBACK = false/USE_GATE_FEEDBACK = true/' /tmp/feedback/waste_sorter/waste_sorter.ino
+          arduino-cli compile --fqbn arduino:avr:uno --warnings all /tmp/feedback/waste_sorter
