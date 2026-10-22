@@ -24,3 +24,12 @@ Record commit, AVR/Servo versions, sensor models/polarities, normalization, fina
 Use `measurements.csv` for physical trials, including true material class, moisture/contact conditions, normalized readings, metal result, chosen command and actual compartment. Report a confusion matrix with UNKNOWN/reject cases and a stated sample count. Do not quote percentage accuracy without actual trials. A commanded angle/cycle counter does not verify correct disposal.
 
 Measure throughput only with a functioning one-item retention mechanism and documented insertion protocol. Test sensors independently from mechanics before combined trials. Simulated or manually injected signals cannot establish sensor discrimination or real jam handling. No physical demonstration, sorting accuracy, capacity or production deployment is claimed.
+
+
+## Validation tooling upgrade — 22 October 2026
+
+Local C++ classification/cycle tests passed with UndefinedBehaviorSanitizer, including fault causes, X fault-latch preservation, optional gate timeout, contradictory contacts, reset conditions and timer rollover. All **13 Python trial-tool tests passed**. They cover native C++ classification, metric denominators, UNKNOWN/reject/jam behavior, source evidence separation, sample split leakage, malformed inputs, calibration isolation, threshold overrides and real CLI report generation.
+
+The example CSV contains **11 synthetic rows** (5 calibration, 6 evaluation). Expected fixture-only evaluation results are 4/6 classifier matches, one UNKNOWN and 3/6 correctly observed bins without a jam. These numbers are test assertions for fabricated data, not measured sorter accuracy. Calibration proposes 200/800 from the synthetic calibration rows but performs worse on the separate synthetic evaluation rows; it is not applied to source or hardware. This demonstrates why an apparent perfect calibration fit is not deployment evidence.
+
+CI now runs Python 3.10/3.12, native controller tests, synthetic report artifacts and UNO compilation with feedback both disabled and enabled. Actual upgraded CI run evidence will be recorded after inspection. Physical calibration, endpoint wiring, real jam trials, photos/video, power and sorting measurements remain pending.
